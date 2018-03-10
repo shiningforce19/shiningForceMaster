@@ -3,7 +3,7 @@
 # TO DO:
 # -----------------------------------------------------------------------
 #
-# 1. Animate selector movement + the map tiles with the camera
+# 1. Make selector movement animation work well with with the camera
 # 2. Holding down a key will move pointer as long as it's held down
 #
 # CHECKPOINT
@@ -12,19 +12,23 @@
 #
 #
 
+#
+# CRITICAL FLAW (MAYBE?)
+#
+# Sprites/Characters locations are currently grid-locked, where updating is based on looping through the grid and
+# animating every object it finds in a cell. This makes animation a lot more difficult, as we will have to keep track
+# of two locations, one grid-locked one, and the other the location to put the sprite, which could be in-between
+# grid spaces when animating.
+# To fix this, remove the requirement for a cell to contain a character and have characters be free-form. But does this
+# make choosing spell targets more difficult???
+#
+#
+#
+
 # FOR SMOOTH SPRITE MOVEMENT:
 # CHANGE TO AN "ANIMATING" STATE WHEN key is pressed. While in this state, move a set increment
 # for each run of a loop. Within this loop, check for a new key press and queue only the most
 # recent key press up to be done at the end of the animation
-
-
-
-#
-#
-# KNOWN ISSUES:
-# -----------------------------------------------------------------------
-# - Why does Max's sprite update half as often as the bat sprites?
-# - Performance optimizations could still be done
 #
 #########################################################################
 
@@ -66,6 +70,7 @@ selected = None
 ploc_i = 4
 ploc_j = 16
 state = ""
+bufferedCommand = ""
 
 # Set Up the Display:
 pygame.init()
@@ -94,6 +99,8 @@ for i in range (0, MAPWIDTH):
         x = GridSpace(None, 0, 0, 0, 0, 0, 0)
         grid[i][j] = x
 state = "selecting"
+animation_stage_horizontal = 0
+animation_stage_vertical = 0
 
 # Fill the grid from the selected population:
 for populant in current_population:
@@ -117,30 +124,32 @@ while True:
                     if (ploc_i + 1 > CAMERABUFFER and ploc_i + 1 < MAPWIDTH - CAMERABUFFER):
                         cameraX += (1*TILESIZE)
 
-                    ploc_i += 1
+                    state = "animating"
+                    animation_stage_horizontal = 1
             elif event.key == K_LEFT and ploc_i > 0:
                 if state == "selecting":
 
                     if (ploc_i - 1 >= CAMERABUFFER and ploc_i - 1 < MAPWIDTH - CAMERABUFFER - 1):
                         cameraX -= (1*TILESIZE)
-                    
-                    ploc_i -= 1
+
+                    state = "animating"
+                    animation_stage_horizontal = -1
             elif event.key == K_UP and ploc_j > 0:
                 if state == "selecting":
 
                     if (ploc_j - 1 >= CAMERABUFFER and ploc_j - 1 < MAPWIDTH - CAMERABUFFER - 1):
                         cameraY -= (1*TILESIZE)
-                    
-                    ploc_j -= 1
 
+                    state = "animating"
+                    animation_stage_vertical = -1
             elif event.key == K_DOWN and ploc_j < MAPHEIGHT - 1:
                 if state == "selecting":
 
                     if (ploc_j + 1 > CAMERABUFFER and ploc_j + 1 < MAPWIDTH - CAMERABUFFER):
                         cameraY += (1*TILESIZE)
-                    
-                    ploc_j += 1                    
 
+                    state = "animating"
+                    animation_stage_vertical = 1
     # Display the map:
     for row in range(MAPHEIGHT):
         for column in range(MAPWIDTH):
@@ -153,6 +162,35 @@ while True:
     # Display the selector if appropriate:
     if state == "selecting":
         DISPLAYSURF.blit(selector_image, (ploc_i*TILESIZE - cameraX, ploc_j*TILESIZE - cameraY, TILESIZE, TILESIZE))
+    elif state == "animating":
+        if animation_stage_horizontal >= 1:
+            animation_stage_horizontal += 1
+        elif animation_stage_horizontal <= -1:
+            animation_stage_horizontal -= 1
+        elif animation_stage_vertical >= 1:
+            animation_stage_vertical += 1
+        elif animation_stage_vertical <= -1:
+            animation_stage_vertical -= 1
+
+        DISPLAYSURF.blit(selector_image, (ploc_i*TILESIZE - cameraX + animation_stage_horizontal, ploc_j*TILESIZE - cameraY + animation_stage_vertical, TILESIZE, TILESIZE))
+
+        if animation_stage_horizontal >= TILESIZE:
+            animation_stage_horizontal = 0
+            ploc_i += 1
+            state = "selecting"
+        elif animation_stage_horizontal <= -TILESIZE:
+            animation_stage_horizontal = 0
+            ploc_i -= 1
+            state = "selecting"
+        elif animation_stage_vertical >= TILESIZE:
+            animation_stage_vertical = 0
+            ploc_j += 1
+            state = "selecting"
+        elif animation_stage_vertical <= -TILESIZE:
+            animation_stage_vertical = 0
+            ploc_j -= 1
+            state = "selecting"
+
     # Display the menus:
     DISPLAYSURF.blit(menu_image_1, (0*TILESIZE, 9*TILESIZE, TILESIZE, TILESIZE))
     DISPLAYSURF.blit(menu_image_2, (3*TILESIZE, 9*TILESIZE, TILESIZE, TILESIZE))
