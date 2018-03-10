@@ -3,7 +3,8 @@ import random, os, copy, time
 from Class_Definition_Character import Character
 import Asset_Instantiation_Sprites as n
 from Object_Instantiation_Sprite import Max_Sprite
-from Object_Instantiation_Sprite import Bat_Sprite
+from Object_Instantiation_Sprite import Bat_Sprite_1
+from Object_Instantiation_Sprite import Bat_Sprite_2
 
 from Object_Instantiation_Class import Lord
 
@@ -16,8 +17,8 @@ from Object_Instantiation_Class import Lord
 Max = Character (1, "Max", "MAX",           7, 7, 6, 6, 5, 5, 5, 5, 5, 3, 3, 3, 3, 3, 3, 3, 3, "None", "None", 1, Lord, [], [], "None", "None", "None", "None", "None", {"sword":"E", "lance":"E", "axe":"E", "artifact":"E", "ranged":"E", "stave":"E"}, [], "Shining Force", Max_Sprite)
 
 # Define Enemy Characters:                  HP MP ST MG DF RS SP SK MV HP MP ST MG DF RS SP SK
-Bat_1 = Character (101, "Bat", "BAT",       10,   0,   4,  0,  2,  2,  3,  0,  5, 0, 0, 0, 0, 0, 0, 0, 0, "None", "None", 1, None, [], [], "None", "None", "None", "None", "None", {"sword":"E", "lance":"E", "axe":"E", "artifact":"E", "ranged":"E", "stave":"E"}, [], "Enemy", Bat_Sprite)
-Bat_2 = Character (101, "Bat", "BAT",       10,   0,   4,  0,  2,  2,  3,  0,  5, 0, 0, 0, 0, 0, 0, 0, 0, "None", "None", 1, None, [], [], "None", "None", "None", "None", "None", {"sword":"E", "lance":"E", "axe":"E", "artifact":"E", "ranged":"E", "stave":"E"}, [], "Enemy", Bat_Sprite)
+Bat_1 = Character (101, "Bat", "BAT",       10,   0,   4,  0,  2,  2,  3,  0,  5, 0, 0, 0, 0, 0, 0, 0, 0, "None", "None", 1, None, [], [], "None", "None", "None", "None", "None", {"sword":"E", "lance":"E", "axe":"E", "artifact":"E", "ranged":"E", "stave":"E"}, [], "Enemy", Bat_Sprite_1)
+Bat_2 = Character (101, "Bat", "BAT",       10,   0,   4,  0,  2,  2,  3,  0,  5, 0, 0, 0, 0, 0, 0, 0, 0, "None", "None", 1, None, [], [], "None", "None", "None", "None", "None", {"sword":"E", "lance":"E", "axe":"E", "artifact":"E", "ranged":"E", "stave":"E"}, [], "Enemy", Bat_Sprite_2)
 
 
 

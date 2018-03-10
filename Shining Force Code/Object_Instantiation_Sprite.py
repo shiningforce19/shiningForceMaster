@@ -17,6 +17,7 @@ bat_sprite_dict_N = {'BAT_N_1': n.sprites[12], 'BAT_N_2': n.sprites[13]}
 bat_sprite_dict_E = {'BAT_E_1': n.sprites[14], 'BAT_E_2': n.sprites[15]}
 
 Max_Sprite = Sprite(max_sprite_dict_S, max_sprite_dict_W, max_sprite_dict_N, max_sprite_dict_E,)
-Bat_Sprite = Sprite(bat_sprite_dict_S, bat_sprite_dict_W, bat_sprite_dict_N, bat_sprite_dict_E,)
+Bat_Sprite_1 = Sprite(bat_sprite_dict_S, bat_sprite_dict_W, bat_sprite_dict_N, bat_sprite_dict_E,)
+Bat_Sprite_2 = Sprite(bat_sprite_dict_S, bat_sprite_dict_W, bat_sprite_dict_N, bat_sprite_dict_E,)
 
 

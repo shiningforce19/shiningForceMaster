@@ -29,7 +29,7 @@ class Sprite(pygame.sprite.Sprite):
         consider using a timer of some sort so it updates slower.'''
         
         self.counter += 1
-        if (self.counter >= 500): # Frequency of sprite change
+        if (self.counter >= 250): # Frequency of sprite change
             self.counter = 0
             self.index += 1
             
